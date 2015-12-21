@@ -15,13 +15,13 @@ library(lattice)
 
 Load data
 
-```{r}
+```{r, echo=TRUE}
 activitydata <- read.csv("activity.csv", stringsAsFactors=FALSE)
 ```
 
 Process data
 
-```{r}
+```{r, echo=TRUE}
 #Change Date format
 activitydata$date <- as.POSIXct(activitydata$date, format="%Y-%m-%d")
 
@@ -44,7 +44,7 @@ activity2 <- data.frame(date=activitydata$date,
 
 ## What is the mean total number of steps taken per day?
 
-```{r}
+```{r, echo=TRUE}
 activitysum <- aggregate(activity2$steps, by=list(activity2$date), FUN=sum, na.rm=TRUE)
 
 names(activitysum) <- c("date", "total")
@@ -52,7 +52,7 @@ names(activitysum) <- c("date", "total")
 
 1. Histogram of total steps taken
 
-```{r}
+```{r, echo=TRUE}
 
 hist(activitysum$total, 
      breaks=seq(from=0, to=30000, by=3000),
@@ -63,12 +63,12 @@ hist(activitysum$total,
 ```
 
 2. Mean
-```{r}
+```{r, echo=TRUE}
 mean(activitysum$total)
 ```
 
 2. Median
-```{r}
+```{r, echo=TRUE}
 median(activitysum$total)
 ```
 
@@ -76,7 +76,7 @@ median(activitysum$total)
 
 1. Time series plot
 
-```{r}
+```{r, echo=TRUE}
 activitymean <- aggregate(activity2$steps, 
                        by=list(activity2$interval), 
                        FUN=mean, 
@@ -86,7 +86,7 @@ names(activitymean) <- c("interval", "mean")
 ```
 
 
-```{r}
+```{r, echo=TRUE}
 plot(activitymean$interval, 
      activitymean$mean, 
      type="l", 
@@ -99,7 +99,7 @@ plot(activitymean$interval,
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r}
+```{r, echo=TRUE}
 activitymax <- activitymean[which.max(activitymean$steps),]
 
 activitymax
@@ -109,7 +109,7 @@ activitymax
 
 1. Number of NA's in dataset
 
-```{r}
+```{r, echo=TRUE}
 NAcount <- sum(is.na(activity2$steps))
 
 NAcount
@@ -119,7 +119,7 @@ The number of NA's is 2304
 
 2. Inout values for NA's
 
-```{r}
+```{r, echo=TRUE}
 NAloc <- which(is.na(activity2$steps))
 
 NAvalue <- rep(mean(activity2$steps, na.rm=TRUE), times=length(NAloc))
@@ -127,18 +127,18 @@ NAvalue <- rep(mean(activity2$steps, na.rm=TRUE), times=length(NAloc))
 
 3. Create new dataset with NA's filled in
 
-```{r}
+```{r, echo=TRUE}
 activity2[NAloc, "steps"] <- NAvalue
 ```
 
 Display results
 
-```{r}
+```{r, echo=TRUE}
 head(activity2)
 ```
 
 4.
-```{r}
+```{r, echo=TRUE}
 activitysum2 <- aggregate(activity2$steps, by=list(activity2$date), FUN=sum)
 
 # Rename the attributes
@@ -154,7 +154,7 @@ hist(activitysum2$total,
 ```
 
 New mean and median
-```{r}
+```{r, echo=TRUE}
 mean(activitysum2$total)
 median(activitysum2$total)
 ```
@@ -165,7 +165,7 @@ The values of the mean and median are higher, because we replaced the values of 
 ##Are there differences in activity patterns between weekdays and weekends?
 
 1. Create a new dataset with weekday and weekend
-```{r}
+```{r, echo=TRUE}
 #This was done during the preprocessing and transforming step of the data
 
 head(activity2)
@@ -173,7 +173,7 @@ head(activity2)
 
 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5- minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis)
 
-```{r}
+```{r, echo=TRUE}
 activitymean2 <- aggregate(activity2$steps, 
                        by=list(activity2$daytype, 
                                activity2$weekday, activity2$interval), mean)
@@ -182,7 +182,7 @@ names(activitymean2) <- c("daytype", "weekday", "interval", "mean")
 ```
 
 Time series plot
-```{r}
+```{r, echo=TRUE}
 xyplot(mean ~ interval | daytype, activitymean2, 
        type="l", 
        lwd=1, 
